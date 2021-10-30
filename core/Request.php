@@ -95,4 +95,15 @@ class Request
         return $this->path;
     }
 
+    /**
+     * Return get parameter by name
+     * @param $name
+     * @return mixed|null
+     */
+    public function getQueryParameter($name)
+    {
+        return isset($this->originalGet[$name]) ? $this->originalGet[$name] : null;
+    }
+
+
 }
