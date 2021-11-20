@@ -18,6 +18,7 @@ class HelloWorldController
             'title' => 'Hello page',
             'text' => 'hello'
         ]));
+
     }
 
 
