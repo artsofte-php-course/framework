@@ -17,4 +17,15 @@ $routes = [
         'controller' => 'helloWorld',
         'action' => 'world'
     ],
+
+    '/create/form' => [
+        'controller' => 'index',
+        'action' => 'createForm'
+    ],
+
+    '/create' => [
+        'controller' => 'index',
+        'action' => 'create'
+
+    ]
 ];

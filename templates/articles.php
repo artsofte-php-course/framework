@@ -17,6 +17,9 @@
         <td><a href="/show?id=<?php echo $article['id'] ?>"><?php echo $article['name']?></a></td>
     </tr>
 <?php endforeach; ?>
+</table>
+
+<a href="/create/form" >Add article</a>
 
 </body>
 </html>

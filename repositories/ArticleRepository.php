@@ -31,4 +31,10 @@ class ArticleRepository
 
         return $statement->fetch();
     }
+
+    public function add($name, $body)
+    {
+        $this->connection->prepare("INSERT INTO articles (id, name, body) VALUES (?, ?, ?)")
+            ->execute([null, $name, $body]);
+    }
 }

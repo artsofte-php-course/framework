@@ -18,7 +18,9 @@ $request = Request::createFromGlobals();
 
 $dsn = sprintf("mysql:host=%s;dbname=%s;charset=%s", $database['database_host'], $database['database_name'],  $database['charset']);
 /** @var PDO $connection */
-$connection = new PDO( $dsn, $database['username'], $database['password']);
+$connection = new PDO( $dsn, $database['username'], $database['password'], [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+]);
 
 $articleRepository = new ArticleRepository($connection);
 

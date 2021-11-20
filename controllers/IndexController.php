@@ -33,7 +33,7 @@ class IndexController
     {
         $id = $request->getQueryParameter("id");
 
-        $article = is_int($id) ? $this->articleRepository->getById($id) : null;
+        $article = is_numeric($id) ? $this->articleRepository->getById($id) : null;
 
         if ($article === null) {
             return new Response('Page not found', '404', 'Not found');
@@ -45,6 +45,41 @@ class IndexController
             ])
         );
     }
+
+    /**
+     * Show form far article create.
+     * @param Request $request
+     * @return Response
+     */
+    public function createFormAction(Request $request)
+    {
+        return new Response (
+                $this->render('article/form', [])
+        );
+
+    }
+
+    /**
+     * Add new article
+     * @param Request $request
+     * @return Response|void
+     */
+    public function createAction(Request $request)
+    {
+        if ($request->isPost() && !empty($request->getRequestParameter('article'))) {
+
+            $article = $request->getRequestParameter('article');
+
+            $this->articleRepository->add($article['name'], $article['body']);
+
+            return new Response(
+                '/', '301', 'Moved'
+            );
+
+        }
+
+    }
+
 
     protected function render($templateName, $vars = [])
     {
