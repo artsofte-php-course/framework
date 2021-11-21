@@ -5,6 +5,14 @@ $routes = [
         'controller' => 'index',
         'action' => 'index'
     ],
+    '/addsell' => [
+        'controller' => 'table',
+        'action' => 'addSell'
+    ],
+    '/table' => [
+        'controller' => 'table',
+        'action' => 'showTable'
+    ],
     '/show' => [
         'controller' => 'index',
         'action' => 'show'

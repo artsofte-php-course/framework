@@ -1,6 +1,7 @@
 <?php
-require_once 'controllers/IndexController.php';
+require_once 'controllers/TableController.php';
 require_once 'controllers/HelloWorldController.php';
+require_once 'controllers/IndexController.php';
 
 require_once 'core/Request.php';
 require_once 'core/Response.php';
@@ -28,7 +29,7 @@ $agentsRepository = new AgentsRepository($connection);
 
 try {
     $route = $router->match($request->getPath());
-} catch (\InvalidArgumentException $exception) {
+} catch (InvalidArgumentException $exception) {
     $route = [
         'controller' => 'index',
         'action' => 'index'
@@ -36,8 +37,9 @@ try {
 }
 
 $controllers = [
-    'index' => new IndexController($articleRepository, $sellsRepository, $agentsRepository),
+    'table' => new TableController($articleRepository, $sellsRepository, $agentsRepository),
     'helloWorld' => new HelloWorldController(),
+    'index' => new IndexController()
 ];
 
 $controller = $controllers[$route['controller']];
