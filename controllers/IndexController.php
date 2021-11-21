@@ -12,26 +12,33 @@ class IndexController
      * @var ArticleRepository
      */
     protected $articleRepository;
+    protected $sellsRepository;
+    protected $agentsRepository;
 
-    public function __construct(ArticleRepository $articleRepository)
+    public function __construct(ArticleRepository $articleRepository, SellsRepository $sellsRepository, AgentsRepository $agentsRepository)
     {
         $this->articleRepository = $articleRepository;
+        $this->sellsRepository = $sellsRepository;
+        $this->agentsRepository = $agentsRepository;
     }
 
 
+    //Will return table of | agent_name | num_of_sellf | sum |
     public function indexAction(Request $request)
     {
-        $articles = $this->articleRepository->getAll();
-        return new Response(
-            $this->render('articles', [
-                'articles' => $articles
-            ])
-        );
+//        $articles = $this->articleRepository->getAll();
+//        return new Response(
+//            $this->render('articles', [
+//                'articles' => $articles
+//            ])
+//        );
+//        $sells = $this->sellsRepository->getAll();
+        return new Response($this->render('comission-total', ['sellsRepository' => $this->sellsRepository, 'agentsRepository' => $this->agentsRepository]));
     }
 
     public function showAction(Request $request)
     {
-        $id = $request->getQueryParameter("id");
+        $id = (int)$request->getQueryParameter("id");
 
         $article = is_int($id) ? $this->articleRepository->getById($id) : null;
 
