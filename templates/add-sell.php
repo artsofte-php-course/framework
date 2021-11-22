@@ -5,6 +5,9 @@
 <body>
 <h1>Add new sell to the DB</h1>
 <form action="/addsell" method="post">
+    <p>Agent's fullname</p>
+    <input type="text" name="name">
+    <br>
     <p>Sum of sell</p>
     <input type="text" name="sum">
     <br>

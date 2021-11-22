@@ -3,7 +3,7 @@
 $database = [
     'database_host' => 'localhost',
     'database_name' => 'framework',
-    'username' => 'root',
-    'password' => null,
+    'username' => 'student',
+    'password' => 'password',
     'charset'  => 'utf8'
 ];

@@ -38,11 +38,16 @@ class TableController
 
     public function addSellAction(Request $request){
         if($request->isPost()){
-            echo 'ABOBUS';
-            echo $request->getPostParameter('sum');
-            echo $request->getPostParameter('contract_number');
-            echo $request->getPostParameter('apartment_number');
-            echo $request->getPostParameter('living_complex');
+//            echo 'ABOBUS';
+
+            $name = $request->getPostParameter('name');
+            $agent_id = $this->agentsRepository->getIdByAgentsName($name);
+            $sum = (int)$request->getPostParameter('sum');
+            $contract_number = $request->getPostParameter('contract_number');
+            $apartment_number = $request->getPostParameter('apartment_number');
+            $living_complex = $request->getPostParameter('living_complex');
+
+            $this->sellsRepository->addNewSell($agent_id[0], $sum, $contract_number, $apartment_number, $living_complex, $name);
             return new Response($this->render('comission-total', ['sellsRepository' => $this->sellsRepository, 'agentsRepository' => $this->agentsRepository]));
         }
         return new Response($this->render('add-sell'));
