@@ -23,22 +23,27 @@ class SellsRepository
         return $statement->fetchAll();
     }
 
-    public function addNewSell($id, $sum, $contract_number, $apartment_number, $living_complex, $name)
+    public function addNewSell(Sell $sell)
     {
-        $query = 'INSERT INTO apartments_sells (agent_id, sum, contract_number, apartment_number, living_complex)
+        $template_query = 'INSERT INTO apartments_sells (agent_id, sum, contract_number, apartment_number, living_complex)
 VALUES (%d, %d, %d, %d, \'%s\');';
-        $formated_query = sprintf($query, $id, $sum, $contract_number, $apartment_number, $living_complex);
-        $statement = $this->connection->query($formated_query);
-        if(!$statement) {
-            $this->agentsRepository->addNewAgent($name);
-            $id2 = $this->agentsRepository->getIdByAgentsName($name)[0];
-            $formated_query2 = sprintf($query, $id2, $sum, $contract_number, $apartment_number, $living_complex);
-            $statement2 = $this->connection->query($formated_query2);
-            $statement2->execute();
-            echo "ST1";
-        }else{
-            $statement->execute();
-            echo "ST2";
+
+        $query = sprintf($template_query,
+            $sell->agent_id,
+            $sell->sum,
+            $sell->contract_number,
+            $sell->apartment_number,
+            $sell->living_complex);
+
+        $statement = $this->connection->query($query);
+
+        if (!$statement) {
+
+            $this->agentsRepository->addNewAgent($sell->name);
+            $sell->agent_id = (int)$this->agentsRepository->getIdByAgentsName($sell->name)[0];
+            var_dump($sell->agent_id);
+            $query = sprintf($template_query, $sell->agent_id, $sell->sum, $sell->contract_number, $sell->apartment_number, $sell->living_complex);
+            $statement = $this->connection->query($query);
         }
     }
 }

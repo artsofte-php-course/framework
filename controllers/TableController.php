@@ -42,14 +42,14 @@ class TableController
 
             $sell = new Sell();
 
-            $name = $request->getPostParameter('name');
-            $agent_id = $this->agentsRepository->getIdByAgentsName($name);
-            $sum = (int)$request->getPostParameter('sum');
-            $contract_number = $request->getPostParameter('contract_number');
-            $apartment_number = $request->getPostParameter('apartment_number');
-            $living_complex = $request->getPostParameter('living_complex');
+            $sell->name = $request->getPostParameter('name');
+            $sell->agent_id = $this->agentsRepository->getIdByAgentsName($sell->name)[0];
+            $sell->sum = (int)$request->getPostParameter('sum');
+            $sell->contract_number = $request->getPostParameter('contract_number');
+            $sell->apartment_number = $request->getPostParameter('apartment_number');
+            $sell->living_complex = $request->getPostParameter('living_complex');
 
-            $this->sellsRepository->addNewSell($agent_id[0], $sum, $contract_number, $apartment_number, $living_complex, $name);
+            $this->sellsRepository->addNewSell($sell);
             return new Response($this->render('comission-total', ['sellsRepository' => $this->sellsRepository, 'agentsRepository' => $this->agentsRepository]));
         }
         return new Response($this->render('add-sell'));
