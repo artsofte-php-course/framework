@@ -1,4 +1,5 @@
 <?php
+require_once 'entities/Sell.php';
 
 class TableController
 {
@@ -38,7 +39,8 @@ class TableController
 
     public function addSellAction(Request $request){
         if($request->isPost()){
-//            echo 'ABOBUS';
+
+            $sell = new Sell();
 
             $name = $request->getPostParameter('name');
             $agent_id = $this->agentsRepository->getIdByAgentsName($name);
