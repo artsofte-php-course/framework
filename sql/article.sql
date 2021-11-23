@@ -24,10 +24,11 @@ CREATE TABLE IF NOT EXISTS apartments_sells
     agent_id         INT(11)      NOT NULL,
 
     sum              INT(11)      NOT NULL,
-    contract_number  varchar(255) not null primary key,
+    contract_number  varchar(255) not null,
     apartment_number INT(11)      NOT NULL,
     living_complex   varchar(255) not null,
-    FOREIGN KEY (agent_id) REFERENCES agents (id)
+    FOREIGN KEY (agent_id) REFERENCES agents (id),
+    PRIMARY KEY (apartment_number, living_complex)
 ) ENGINE = InnoDB;
 
 # INSERT INTO apartments_sells (agent_id, sum, contract_number, apartment_number, living_complex)
@@ -59,5 +60,5 @@ CREATE TABLE IF NOT EXISTS contracts
     sign_date       datetime
 ) ENGINE = InnoDB;
 
-insert into contracts (number, agent_name, living_complex, award_type, award_size, expiration_date, sign_date)
-values (9827439, 'Grigoriy Mironovich Karpov', 'Three-leaf Clover', 'fix', 120000, '2021-11-23', '2022-11-25');
+# insert into contracts (number, agent_name, living_complex, award_type, award_size, expiration_date, sign_date)
+# values (9827439, 'Grigoriy Mironovich Karpov', 'Three-leaf Clover', 'fix', 120000, '2021-11-23', '2022-11-25');

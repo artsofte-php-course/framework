@@ -34,15 +34,19 @@ VALUES (%d, %d, %d, %d, \'%s\');';
             $sell->contract_number,
             $sell->apartment_number,
             $sell->living_complex);
-
         $statement = $this->connection->query($query);
 
-        if (!$statement) {
+        if ($sell->agent_id == 0) {
 
             $this->agentsRepository->addNewAgent($sell->name);
             $sell->agent_id = (int)$this->agentsRepository->getIdByAgentsName($sell->name)[0];
-            var_dump($sell->agent_id);
-            $query = sprintf($template_query, $sell->agent_id, $sell->sum, $sell->contract_number, $sell->apartment_number, $sell->living_complex);
+
+            $query = sprintf($template_query,
+                $sell->agent_id,
+                $sell->sum,
+                $sell->contract_number,
+                $sell->apartment_number,
+                $sell->living_complex);
             $statement = $this->connection->query($query);
         }
     }

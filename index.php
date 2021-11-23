@@ -25,7 +25,7 @@ $dsn = sprintf("mysql:host=%s;dbname=%s;charset=%s", $database['database_host'],
 /** @var PDO $connection */
 $connection = new PDO( $dsn, $database['username'], $database['password']);
 
-$articleRepository = new ArticleRepository($connection);
+//$articleRepository = new ArticleRepository($connection);
 $sellsRepository = new SellsRepository($connection);
 $agentsRepository = new AgentsRepository($connection);
 $contractsRepository = new ContractsRepository($connection);
@@ -40,7 +40,7 @@ try {
 }
 
 $controllers = [
-    'table' => new TableController($articleRepository, $sellsRepository, $agentsRepository),
+    'table' => new TableController($contractsRepository, $sellsRepository, $agentsRepository),
     'helloWorld' => new HelloWorldController(),
     'index' => new IndexController(),
     'contracts' => new ContractsController($contractsRepository)

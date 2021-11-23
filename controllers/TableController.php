@@ -12,13 +12,13 @@ class TableController
     /**
      * @var ArticleRepository
      */
-    protected $articleRepository;
+    protected $contractsRepository;
     protected $sellsRepository;
     protected $agentsRepository;
 
-    public function __construct(ArticleRepository $articleRepository, SellsRepository $sellsRepository, AgentsRepository $agentsRepository)
+    public function __construct(ContractsRepository $contractsRepository, SellsRepository $sellsRepository, AgentsRepository $agentsRepository)
     {
-        $this->articleRepository = $articleRepository;
+        $this->contractsRepository = $contractsRepository;
         $this->sellsRepository = $sellsRepository;
         $this->agentsRepository = $agentsRepository;
     }
@@ -27,32 +27,46 @@ class TableController
     //Will return table of | agent_name | num_of_sellf | sum |
     public function showTableAction(Request $request)
     {
-//        $articles = $this->articleRepository->getAll();
-//        return new Response(
-//            $this->render('articles', [
-//                'articles' => $articles
-//            ])
-//        );
-//        $sells = $this->sellsRepository->getAll();
         return new Response($this->render('comission-total', ['sellsRepository' => $this->sellsRepository, 'agentsRepository' => $this->agentsRepository]));
     }
 
-    public function addSellAction(Request $request){
-        if($request->isPost()){
+    public function addSellAction(Request $request)
+    {
+        if ($request->isPost()) {
 
             $sell = new Sell();
 
-            $sell->name = $request->getPostParameter('name');
+            $contract_info = explode(', ', $request->getPostParameter('contract_info'));
+//            var_dump($contract_info);
+            $sell->name = $contract_info[1];
             $sell->agent_id = $this->agentsRepository->getIdByAgentsName($sell->name)[0];
-            $sell->sum = (int)$request->getPostParameter('sum');
-            $sell->contract_number = $request->getPostParameter('contract_number');
-            $sell->apartment_number = $request->getPostParameter('apartment_number');
-            $sell->living_complex = $request->getPostParameter('living_complex');
 
+            $sell->contract_number = (int)$contract_info[0];
+
+            $apartment_price = (int)$request->getPostParameter('sum');
+            $sell->sum = $this->getAwardFromApartmentPrice($sell->contract_number, $apartment_price);
+
+            $sell->apartment_number = $request->getPostParameter('apartment_number');
+            $sell->living_complex = $contract_info[2];
+//            var_dump($sell);
             $this->sellsRepository->addNewSell($sell);
             return new Response($this->render('comission-total', ['sellsRepository' => $this->sellsRepository, 'agentsRepository' => $this->agentsRepository]));
         }
-        return new Response($this->render('add-sell'));
+        return new Response($this->render('add-sell', ['contractsRepository' => $this->contractsRepository]));
+    }
+
+    protected function getAwardFromApartmentPrice($contract_number, $apartment_price)
+    {
+        $contract = $this->contractsRepository->getContractByNumber($contract_number)[0];
+//        var_dump($contract_number);
+//        var_dump($contract);
+        $award_type = $contract['award_type'];
+        var_dump($award_type);
+        if($award_type === 'fix'){
+            return (int)$contract['award_size'];
+        }else{
+            return (((int)$contract['award_size'])/100) * ((int)$apartment_price);
+        }
     }
 
     protected function render($templateName, $vars = [])

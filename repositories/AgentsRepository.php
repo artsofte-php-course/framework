@@ -39,7 +39,7 @@ class AgentsRepository
 
     public function addNewAgent($name){
         $statement = $this->connection->query('INSERT INTO agents (full_name) VALUE (\'' . $name . '\');');
-        echo 'added new mfr';
+//        echo 'added new mfr';
 //        $statement->execute();
     }
 }

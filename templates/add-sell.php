@@ -5,20 +5,19 @@
 <body>
 <h1>Add new sell to the DB</h1>
 <form action="/addsell" method="post">
-    <p>Agent's fullname</p>
-    <input type="text" name="name">
+    <p>Price of the appartment</p>
+    <input type="number" min="500000" name="sum">
     <br>
-    <p>Sum of sell</p>
-    <input type="text" name="sum">
-    <br>
-    <p>Contract number</p>
-    <input type="text" name="contract_number">
+    <!--Spisok vseh contractov-->
+    <p>Contract number, Contractor, Living complex name</p>
+    <select size="1" name="contract_info">
+        <?php foreach ($contractsRepository->getAll() as $contract): ?>
+            <option><?php echo $contract['number'] . ', ' . $contract['agent_name'] . ', ' . $contract['living_complex'];?></option>
+        <?php endforeach; ?>
+    </select>
     <br>
     <p>Apartment number</p>
-    <input type="text" name="apartment_number">
-    <br>
-    <p>Living complex name</p>
-    <input type="text" name="living_complex">
+    <input type="number" min="1" name="apartment_number">
     <br>
     <input type="submit" value="Register">
 </form>

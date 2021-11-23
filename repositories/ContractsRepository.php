@@ -15,6 +15,12 @@ class ContractsRepository
         return $statement->fetchAll();
     }
 
+    public function getContractByNumber($number)
+    {
+        $statement = $this->connection->query("SELECT * FROM contracts WHERE number = " . $number . ";");
+        return $statement->fetchAll();
+    }
+
     public function addContract(Contract $contract)
     {
         $query = "insert into contracts (number, agent_name, living_complex, award_type, award_size, expiration_date, sign_date)
