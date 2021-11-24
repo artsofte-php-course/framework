@@ -1,6 +1,5 @@
 <?php
 require_once 'controllers/TableController.php';
-require_once 'controllers/HelloWorldController.php';
 require_once 'controllers/IndexController.php';
 require_once 'controllers/ContractsController.php';
 
@@ -8,7 +7,6 @@ require_once 'core/Request.php';
 require_once 'core/Response.php';
 require_once 'core/Router.php';
 
-require_once 'repositories/ArticleRepository.php';
 require_once 'repositories/SellsRepository.php';
 require_once 'repositories/AgentsRepository.php';
 require_once 'repositories/ContractsRepository.php';
@@ -41,7 +39,6 @@ try {
 
 $controllers = [
     'table' => new TableController($contractsRepository, $sellsRepository, $agentsRepository),
-    'helloWorld' => new HelloWorldController(),
     'index' => new IndexController(),
     'contracts' => new ContractsController($contractsRepository, $agentsRepository)
 ];
