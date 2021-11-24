@@ -34,6 +34,7 @@ class TableController
     {
         if ($request->isPost()) {
 
+
             $sell = new Sell();
 
             $contract_info = explode(', ', $request->getPostParameter('contract_info'));
@@ -49,10 +50,29 @@ class TableController
             $sell->apartment_number = $request->getPostParameter('apartment_number');
             $sell->living_complex = $contract_info[2];
 //            var_dump($sell);
+
+            $errors = $this->getErrors($sell);
+            if($errors !== null)
+                return new Response($this->render('add-sell', ['contractsRepository' => $this->contractsRepository, 'errors' => $errors]));
+
+
             $this->sellsRepository->addNewSell($sell);
             return new Response($this->render('comission-total', ['sellsRepository' => $this->sellsRepository, 'agentsRepository' => $this->agentsRepository]));
         }
         return new Response($this->render('add-sell', ['contractsRepository' => $this->contractsRepository]));
+    }
+
+    //Esli cywectwyet contract na prodaju dannoi kvartiri - owibka, inache ok
+    protected function getErrors(Sell $sell){
+        $result = $this->sellsRepository->getAllByLivingComplexAndApartmentNumber($sell->living_complex, $sell->apartment_number);
+//        var_dump($result);
+        //array(0) { }
+        //array(1)
+        if (count($result) == 0){
+            return null;
+        }else{
+            return ['Contract on apartment #' . $sell->apartment_number . ' is already exists. Please, enter different apartment number'];
+        }
     }
 
     protected function getAwardFromApartmentPrice($contract_number, $apartment_price)
@@ -61,7 +81,7 @@ class TableController
 //        var_dump($contract_number);
 //        var_dump($contract);
         $award_type = $contract['award_type'];
-        var_dump($award_type);
+//        var_dump($award_type);
         if($award_type === 'fix'){
             return (int)$contract['award_size'];
         }else{

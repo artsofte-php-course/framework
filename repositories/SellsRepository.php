@@ -17,6 +17,14 @@ class SellsRepository
         return $statement->fetchAll();
     }
 
+    public function getAllByLivingComplexAndApartmentNumber($living_complex, $apartment_number){
+        $template_query = "SELECT * FROM apartments_sells WHERE living_complex = '%s' AND apartment_number = %d";
+        $query = sprintf($template_query, $living_complex, $apartment_number);
+        $statement = $this->connection->query($query);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
     public function getAllByAgentId($id)
     {
         $statement = $this->connection->query("SELECT * FROM apartments_sells WHERE agent_id = " . $id);

@@ -43,7 +43,7 @@ $controllers = [
     'table' => new TableController($contractsRepository, $sellsRepository, $agentsRepository),
     'helloWorld' => new HelloWorldController(),
     'index' => new IndexController(),
-    'contracts' => new ContractsController($contractsRepository)
+    'contracts' => new ContractsController($contractsRepository, $agentsRepository)
 ];
 
 $controller = $controllers[$route['controller']];
