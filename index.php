@@ -1,12 +1,14 @@
 <?php
-require_once 'controllers/IndexController.php';
-require_once 'controllers/HelloWorldController.php';
-
 require_once 'core/Request.php';
 require_once 'core/Response.php';
 require_once 'core/Router.php';
+require_once 'core/BaseController.php';
 
 require_once 'repositories/ArticleRepository.php';
+
+require_once 'controllers/IndexController.php';
+require_once 'controllers/HelloWorldController.php';
+
 
 include_once 'config/routes.php';
 include_once 'config/database.php';

@@ -49,7 +49,8 @@ class Request
         $this->originalServer = $server;
 
         $this->method = $server['REQUEST_METHOD'];
-        $this->path = $server['PATH_INFO'];
+        $this->path = isset($server['PATH_INFO']) ? $server['PATH_INFO'] : '/';
+
     }
 
 
