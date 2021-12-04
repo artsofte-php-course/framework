@@ -4,6 +4,9 @@ require_once 'core/Response.php';
 require_once 'core/Router.php';
 require_once 'core/BaseController.php';
 
+require_once 'validator/ArticleValidator.php';
+
+
 require_once 'repositories/ArticleRepository.php';
 
 require_once 'controllers/IndexController.php';
@@ -12,7 +15,6 @@ require_once 'controllers/HelloWorldController.php';
 
 include_once 'config/routes.php';
 include_once 'config/database.php';
-
 
 $router = new Router($routes);
 $request = Request::createFromGlobals();

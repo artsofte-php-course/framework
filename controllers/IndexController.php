@@ -1,8 +1,7 @@
 <?php
 
-class IndexController
+class IndexController extends BaseController
 {
-    use BaseController;
     /**
      * Action name
      * @var string
@@ -69,16 +68,32 @@ class IndexController
         if ($request->isPost() && !empty($request->getRequestParameter('article'))) {
 
             $article = $request->getRequestParameter('article');
+            $articleValidator = new ArticleValidator();
 
-            $this->articleRepository->add($article['name'], $article['body']);
+            $errors = $articleValidator->validate($article);
 
-            return new Response(
-                '/', '301', 'Moved'
-            );
+            if (empty($errors)) {
+
+                $this->articleRepository->add($article['name'], $article['body']);
+
+                return new Response(
+                    '/', '301', 'Moved'
+                );
+
+            } else {
+
+                return new Response (
+                    $this->render('article/form', [
+                        'errors' => $errors
+                    ])
+                );
+
+            }
 
         }
 
     }
+
 
 
 
