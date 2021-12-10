@@ -1,7 +1,8 @@
 <?php
 require_once 'entities/Contract.php';
+require_once 'controllers/BasicController.php';
 
-class ContractsController
+class ContractsController extends BasicController
 {
 
     protected $contractsRepository;
@@ -44,12 +45,6 @@ class ContractsController
 
     protected function getErrors(Contract $contract)
     {
-        //Contract with such number is already exists
-        //Agent already has contract for this complex
-        //fix 0-1000000
-        //percent 0-10
-        //expiration date > current date
-
         $result = [];
 
         $contracts = $this->contractsRepository->getContractByNumber($contract->number);
@@ -98,21 +93,4 @@ class ContractsController
             return null;
         return $result;
     }
-
-    protected function render($templateName, $vars = [])
-    {
-        ob_start();
-        extract($vars);
-        include sprintf('templates/%s.php', $templateName);
-        $content = ob_get_contents();
-        ob_end_clean();
-        return $content;
-    }
-
-    public function __call($name, $arguments)
-    {
-        return new Response('Sorry but this action not found',
-            '404', 'Not found');
-    }
-
 }
