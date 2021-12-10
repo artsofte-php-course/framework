@@ -1,6 +1,7 @@
 <?php
 require_once 'entities/Sell.php';
 require_once 'controllers/BasicController.php';
+require_once 'controllers/errors_handling/TableErrorHandler.php';
 
 class TableController extends BasicController
 {
@@ -34,23 +35,10 @@ class TableController extends BasicController
     {
         if ($request->isPost()) {
 
+            $sell = new Sell($request, $this->agentsRepository, $this->contractsRepository);
 
-            $sell = new Sell();
-
-            $contract_info = explode(', ', $request->getPostParameter('contract_info'));
-            $sell->name = $contract_info[1];
-            $sell->agent_id = $this->agentsRepository->getIdByAgentsName($sell->name)[0];
-
-            $sell->contract_number = (int)$contract_info[0];
-
-            $apartment_price = (int)$request->getPostParameter('sum');
-            $sell->sum = $this->getAwardFromApartmentPrice($sell->contract_number, $apartment_price);
-
-            $sell->apartment_number = $request->getPostParameter('apartment_number');
-            $sell->living_complex = $contract_info[2];
-
-            $errors = $this->getErrors($sell);
-            if($errors !== null)
+            $errors = TableErrorHandler::getErrors($sell, $this->sellsRepository);
+            if ($errors !== null)
                 return new Response($this->render('add-sell', ['contractsRepository' => $this->contractsRepository, 'errors' => $errors]));
 
 
@@ -60,23 +48,6 @@ class TableController extends BasicController
         return new Response($this->render('add-sell', ['contractsRepository' => $this->contractsRepository]));
     }
 
-    protected function getErrors(Sell $sell){
-        $result = $this->sellsRepository->getAllByLivingComplexAndApartmentNumber($sell->living_complex, $sell->apartment_number);
-        if (count($result) == 0){
-            return null;
-        }else{
-            return ['Contract on apartment #' . $sell->apartment_number . ' is already exists. Please, enter different apartment number'];
-        }
-    }
 
-    protected function getAwardFromApartmentPrice($contract_number, $apartment_price)
-    {
-        $contract = $this->contractsRepository->getContractByNumber($contract_number)[0];
-        $award_type = $contract['award_type'];
-        if($award_type === 'fix'){
-            return (int)$contract['award_size'];
-        }else{
-            return (((int)$contract['award_size'])/100) * ((int)$apartment_price);
-        }
-    }
+
 }
