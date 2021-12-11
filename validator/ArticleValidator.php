@@ -52,7 +52,7 @@ class ArticleValidator
 
                 $size = strlen($data[$fieldName]);
 
-                if ($size < $rule['size']['value']) {
+                if ($size > $rule['size']['value']) {
                     $errors[$fieldName] = isset($rule['size']['message']) ?  $rule['size']['message']  : 'Size exceeded.';
                 }
             }
