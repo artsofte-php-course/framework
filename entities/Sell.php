@@ -6,6 +6,7 @@ class Sell
     public $agent_id;
     public $sum;
     public $contract_number;
+    public $apartment_price;
     public $apartment_number;
     public $living_complex;
 
@@ -15,8 +16,8 @@ class Sell
         $this->name = $contract_info[1];
         $this->agent_id = $agentsRepository->getIdByAgentsName($this->name)[0];
         $this->contract_number = (int)$contract_info[0];
-        $apartment_price = (int)$request->getPostParameter('sum');
-        $this->sum = $this->getAwardFromApartmentPrice($this->contract_number, $apartment_price, $contractsRepository);
+        $this->apartment_price = (int)$request->getPostParameter('sum');
+        $this->sum = $this->getAwardFromApartmentPrice($this->contract_number, $this->apartment_price, $contractsRepository);
         $this->apartment_number = $request->getPostParameter('apartment_number');
         $this->living_complex = $contract_info[2];
     }

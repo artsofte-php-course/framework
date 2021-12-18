@@ -31,6 +31,11 @@ class SellsRepository
         return $statement->fetchAll();
     }
 
+    public function getByContractNumber($number){
+        $statement = $this->connection->query("SELECT * FROM contracts WHERE number = " . $number);
+        return $statement->fetch();
+    }
+
     public function addNewSell(Sell $sell)
     {
         $template_query = 'INSERT INTO apartments_sells (agent_id, sum, contract_number, apartment_number, living_complex)

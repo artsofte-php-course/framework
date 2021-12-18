@@ -47,7 +47,4 @@ class TableController extends BasicController
         }
         return new Response($this->render('add-sell', ['contractsRepository' => $this->contractsRepository]));
     }
-
-
-
 }
